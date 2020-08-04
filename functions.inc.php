@@ -143,11 +143,11 @@ function prepareUserMenu(){
     global $registered_user, $registered_user_category;
     global $messages;
 
-    $page = "<header class='header black-bg'>
+/*    $page = "<header class='header black-bg'>
     <a href='index.php' class='logo'>Web Career Portal</a>
     </header>";
-
-    $page .= '<div class="top-menu" role="alert">
+*/
+    $page = '<div class="top-menu" role="alert">
     <ul class="nav pull-right top-menu">
   <form class="form-menu" method="post">
     <button class="logout btn btn-lg btn-primary btn-block" type="submit" name="logout">Sign out</button>
