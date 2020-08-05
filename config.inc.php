@@ -6,8 +6,8 @@
 */
 
 $host = "localhost";
-$user = "career";
-$password = "career";
+$user = "root";
+$password = "root";
 $dbname = "career";
     
 try {
