@@ -12,7 +12,7 @@ Create a website an online Job Portal website with its own database.
 | Daphné Augier     | 40036123 |
 | Amneet Singh    | 40060303 |
 | Patricia Nunes    | 40006956 |
-| Louis-Benjamin Durocher    | 400455719 |
+| Louis-Benjamin Durocher    | 40045719 |
 
 ## Technologies used
 * PHP
