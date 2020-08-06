@@ -121,7 +121,7 @@ function getUserConnection(){
 function checkUserPassword($user, $password){
     global $registered_user, $registered_user_category;
 
-    $sql = "SELECT user_password, user_status FROM users WHERE user_id = '$user' ";
+    $sql = "SELECT user_password, user_status FROM users WHERE user_name = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
         if ($password == $return[0])
