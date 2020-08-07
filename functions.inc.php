@@ -76,6 +76,14 @@ function prepareConnectionForm(){
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <div class="mt-4">
+          <div class="d-flex justify-content-center links">
+            Dont have an account? <a href="User/signup.php" class="ml-2">Sign Up</a>
+          </div>
+          <div class="d-flex justify-content-center links">
+            <a href="#">Forgot your password?</a>
+          </div>
+        </div>
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
   </form>
   </div>';
