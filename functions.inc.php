@@ -69,13 +69,14 @@ function prepareConnectionForm(){
     <label for="inputUser" class="sr-only">User name</label>
     <input type="text" id="inputUser" class="form-control" placeholder="User name" name="user_name" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="user_password" required>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="user_password" >
     <div class="checkbox mb-3">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" name="cmd" value="sign-in">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" name="cmd" value="forgot">Forgot Password</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
   </form>
   </div>';
@@ -86,6 +87,9 @@ function getUserConnection(){
   global $registered_user, $registered_user_category;
 
     if(isset($_COOKIE["career_user"])){
+      // There is a cookie already set, user is comig back for 2 reasons :
+      // - to continue to work
+      // - to logout
       $registered_user = $_COOKIE['career_user'];
       $registered_user_category = $_COOKIE['career_category'];
       if(isset($_POST['logout'])){
@@ -101,16 +105,33 @@ function getUserConnection(){
             return true;
         }
     } else {
-        if(isset($_POST['user_name'])){
-            if (checkUserPassword($_POST['user_name'], $_POST['user_password']))
-            {
+      // There is no cookie, first time user
+        if(isset($_POST['cmd'])){
+          switch($_POST['cmd']){
+            case "sign-in":
+              if (checkUserPassword($_POST['user_name'], $_POST['user_password'])){
                 $messages['INFO'] =  "Welcome $registered_user";
                 return true;
-            }else{
-              $messages['ERROR'] =  "I don't know you ".$_POST['user_name'];
+              }else{
+                $messages['ERROR'] =  "I don't know you ".$_POST['user_name'];
                 return false;
-            }
+              }
+            break;
+            case "forgot":
+              echo "boom";
+              $registered_user = $_POST['user_name'];
+              
+              $user_mail = getUserMail($registered_user);
+              $user_password = getUserPassword($registered_user);
 
+              $mail_message = "Dear $registered_user,\n Your password is $user_password.\n\nBest wishes,\n\n\nWeb Career Portal Bot";
+
+              mail($user_mail,"Web Career Portal - Password Request", $mail_message);
+              $messages['INFO'] =  "Dear $registered_user, your password was sent to the email address provided at registration time.";
+            break;
+            default:
+            $messages['ERROR'] =  "Unknown command ".$_POST['cmd'];
+          }
         } else {
             return false;
         }
@@ -121,7 +142,7 @@ function getUserConnection(){
 function checkUserPassword($user, $password){
     global $registered_user, $registered_user_category;
 
-    $sql = "SELECT user_password, user_status FROM users WHERE user_name = '$user' ";
+    $sql = "SELECT user_password, user_status FROM users WHERE user_id = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
         if ($password == $return[0])
@@ -143,7 +164,7 @@ function prepareUserMenu(){
     global $registered_user, $registered_user_category;
     global $messages;
 
-/*    $page = "<header class='header black-bg'>
+    /*$page = "<header class='header black-bg'>
     <a href='index.php' class='logo'>Web Career Portal</a>
     </header>";
 */
