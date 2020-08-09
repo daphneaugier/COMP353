@@ -44,7 +44,7 @@ if(isset($_POST['save'])){
 	ECHO $_SESSION['message'];
 	$_SESSION['msg_type'] = "success";
 
-	header("location: ADMIN-EDIT.PHP");
+	header("location: admin_users.PHP");
 }
 
 if(isset($_GET['delete'])){
@@ -55,7 +55,7 @@ if(isset($_GET['delete'])){
 	$_SESSION['message'] = "Record has been deleted!";
 	$_SESSION['msg_type'] = "danger";
 
-	header("location: ADMIN-EDIT.PHP");
+	header("location: admin_users.PHP");
 }
 
 if(isset($_GET['edit'])){
@@ -93,7 +93,7 @@ if(isset($_POST['update'])){
 	$_SESSION['message'] = "Record has been updated!";
 	$_SESSION['msg_type'] = "warning";
 
-	header("location: ADMIN-EDIT.PHP");
+	header("location: admin_users.PHP");
 }
 
 
