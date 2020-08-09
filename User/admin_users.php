@@ -199,7 +199,7 @@ require_once('process-users.php');
                     ?>
                       <tr>
                         <td><?php echo $row['user_id'] ?></td>
-                        <td><?php echo $row['user_status'] ?></td>
+                        <td><?php echo $row['user_category'] ?></td>
                         <td><?php echo $row['user_name'] ?></td>
                         <td><?php echo $row['user_password'] ?></td>
                         <td><?php echo $row['EMAIL_ID'] ?></td>
@@ -224,8 +224,8 @@ require_once('process-users.php');
                   <input type="text" name="user_id" class="form-control" placeholder="Enter user id" value="<?php echo $user_id; ?>">
                   </div>
                   <div class="form-group">
-                  <label>User Status</label>
-                  <input type="text" name="user_status" class="form-control" placeholder="Enter user status" value="<?php echo $user_status; ?>">
+                  <label>User Category</label>
+                  <input type="text" name="user_category" class="form-control" placeholder="Enter user category" value="<?php echo $user_category; ?>">
                   </div>
                   <div class="form-group">
                   <label>Username</label>
