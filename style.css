@@ -39,3 +39,15 @@
   min-height: 60px;
   padding: 0 15px;
 }
+
+form label {
+	float: left;
+	width: 150px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+.clear {
+	display: block;
+	clear: both;
+	width: 100%;
+}

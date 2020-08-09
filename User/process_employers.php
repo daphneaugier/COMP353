@@ -6,7 +6,13 @@ error_reporting(E_ALL);
 
 session_start();
 
-$conn = mysqli_connect("localhost", "root", "root", "career");
+$host = "192.168.64.2";
+$user = "career";
+$password = "topsecret";
+$dbname = "career";
+    
+
+$conn = mysqli_connect($host, $user, $password, "career");
 
 //initialize values to empty string
 $employer_id = "";

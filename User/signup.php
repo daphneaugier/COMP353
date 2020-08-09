@@ -1,70 +1,10 @@
 <?php
-  include_once "config.inc.php";
-  include_once "functions.inc.php";
+  include_once "../config.inc.php";
+  include_once "../functions.inc.php";
 
-
+  my_page_start("Web Career Portal - Sign Up Page");
 
 ?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Sign Up Page</title>
-    <!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      .signup-form form {
-        border-radius: 3px;
-        margin-bottom: 15px;
-        background: #f2f3f7;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-        font-
-      }
-
-      .signup-form h2 {
-        color: #636363;
-        margin: 0 0 15px;
-        position: relative;
-        text-align: center;
-      }
-      .signup-form h2:before, .signup-form h2:after {
-        content: "";
-        height: 2px;
-        width: 30%;
-        background: #d4d4d4;
-        position: absolute;
-        top: 50%;
-        z-index: 2;
-      } 
-      .signup-form h2:before {
-        left: 0;
-      }
-      .signup-form h2:after {
-        right: 0;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="form-validation.css" rel="stylesheet">
-  </head>
-  <body class="bg-light">
     <div class="container">
  <div class="py-1 text-center">
     <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="0">

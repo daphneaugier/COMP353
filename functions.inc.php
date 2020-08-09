@@ -1,45 +1,5 @@
 <?php
 
-
-
-function showSelectPublisher(){
-    global $con;
-    
-    $sql = "SELECT publisher_number, company_name FROM publisher ORDER BY company_name";
-    $result = my_query($sql);
-    if($result){
-        echo '<div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="inputGroupSelect01">Publisher</label>               
-        </div>';
-        echo '<select name="publisher" class="custom-select" id="inputGroupSelect01">';
-        while(list($id, $name) = $result->fetch_array()){
-            echo "<option value='$id'>$name</option>";
-        }
-        echo "</select>
-        </div>
-        ";
-    }
-}
-
-function showSelectBranch(){
-    global $con;
-    $sql = "SELECT branch_id, branch_name FROM branch ORDER BY branch_name";
-    $result = my_query($sql);
-    if($result){
-        echo '<div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="inputGroupSelect01">Branch</label>               
-        </div>
-        <select name="branch" class="custom-select" id="inputGroupSelect01">';
-        while(list($id, $name) = $result->fetch_array()){
-            echo "<option value='$id'>$name</option>";
-        }
-        echo "</select></div>
-        ";
-    }
-}
-
 function my_page_start($title){
   global $messages;
     ?>
@@ -51,11 +11,8 @@ function my_page_start($title){
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
       <link rel="stylesheet" href="style.css">
       <title><?php echo $title; ?></title>
-      <style>
-
-  </style>
   </head>
-  <body>
+  <body class="bg-light">
     <?php
 
 }
@@ -69,19 +26,19 @@ function prepareConnectionForm(){
     <label for="inputUser" class="sr-only">User name</label>
     <input type="text" id="inputUser" class="form-control" placeholder="User name" name="user_name" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="user_password" required>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="user_password" >
     <div class="checkbox mb-3">
       <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" name="cmd" value="sign-in">Sign in</button>
     <div class="mt-4">
           <div class="d-flex justify-content-center links">
             Dont have an account? <a href="User/signup.php" class="ml-2">Sign Up</a>
           </div>
           <div class="d-flex justify-content-center links">
-            <a href="#">Forgot your password?</a>
+          <button class="btn btn-link" type="submit" name="cmd" value="forgot">Forgot your password?</button>
           </div>
         </div>
     <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
@@ -94,31 +51,62 @@ function getUserConnection(){
   global $registered_user, $registered_user_category;
 
     if(isset($_COOKIE["career_user"])){
+      // There is a cookie already set, user is comig back for 2 reasons :
+      // - to continue to work
+      // - to logout
       $registered_user = $_COOKIE['career_user'];
       $registered_user_category = $_COOKIE['career_category'];
       if(isset($_POST['logout'])){
             // Discard cookies
+            session_destroy();
+            session_start();
             setcookie("career_user", "", time()-3600);
             setcookie("career_category", $registered_user_category, time()- 3600);
             $messages['INFO'] = "Good bye $registered_user";
+            
+
             return false;
         }else{
             setcookie("career_user", $registered_user, time()+ 3600); // Relance le cookie pour 1h
             setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
-            $messages['INFO'] =  "Welcome back $registered_user";
+            $messages['INFO'] =  "You are connected as $registered_user";
             return true;
         }
     } else {
-        if(isset($_POST['user_name'])){
-            if (checkUserPassword($_POST['user_name'], $_POST['user_password']))
-            {
-                $messages['INFO'] =  "Welcome $registered_user";
-                return true;
-            }else{
-              $messages['ERROR'] =  "I don't know you ".$_POST['user_name'];
-                return false;
-            }
+      // There is no cookie, first time user
+        if(isset($_POST['cmd'])){
+          switch($_POST['cmd']){
+            case "sign-in":
+              if (checkUserPassword($_POST['user_name'], $_POST['user_password'])){
+               if($_SESSION["type"]=="employer"){
 
+                $messages['INFO'] =  "Welcome employeee";
+                //header("Location: /employer.php");
+                return true;
+               }
+               else{
+                      $messages['INFO'] =  "Welcome user";
+                      return true;
+               }
+              }else{
+                $messages['ERROR'] =  "I don't know you ".$_POST['user_name'];
+                return false;
+              }
+            break;
+            case "forgot":
+              $registered_user = $_POST['user_name'];
+              
+              $user_mail = getUserMail($registered_user);
+              $user_password = getUserPassword($registered_user);
+
+              $mail_message = "Dear $registered_user,\n Your password is $user_password.\n\nBest wishes,\n\n\nWeb Career Portal Bot";
+
+              mail($user_mail,"Web Career Portal - Password Request", $mail_message);
+              $messages['INFO'] =  "Dear $registered_user, your password was sent to the email address provided at registration time.";
+            break;
+            default:
+            $messages['ERROR'] =  "Unknown command ".$_POST['cmd'];
+          }
         } else {
             return false;
         }
@@ -129,7 +117,9 @@ function getUserConnection(){
 function checkUserPassword($user, $password){
     global $registered_user, $registered_user_category;
 
-    $sql = "SELECT user_password, user_status FROM users WHERE user_name = '$user' ";
+
+    $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_ID = '$user' ";
+    $sql = "SELECT user_password, user_category FROM users WHERE user_id = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
         if ($password == $return[0])
@@ -139,22 +129,61 @@ function checkUserPassword($user, $password){
 
             setcookie("career_user", $registered_user, time()+ 3600); // Crée le cookie
             setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
+            $_SESSION["type"] = "users";
+            $_SESSION["emp_id"] = $registered_user;
+
+
+            return true;
+        }
+    }
+    if($result = my_query($sql2)){
+        $return = $result->fetch();
+        if ($password == $return[0])
+        {
+            $registered_user = $user;
+            //$registered_user_category = $return[1];
+
+            setcookie("career_Employee", $registered_user, time()+ 3600); // Crée le cookie
+            //setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
+            $_SESSION["type"] = "employer";
+            $_SESSION["emp_id"] = $registered_user;
+
 
             return true;
         }else{
             return false;
         }
     }
+
+}
+
+function numofappliposted(){
+  $cux_id=$_SESSION["emp_id"];
+  //$sql2 = "SELECT COUNT(JOB_ID) FROM OFFEREDJOBS WHERE EMPLOYER_ID = '$_SESSION["emp_id"]' ";
+  $sql2 = "SELECT COUNT(JOB_ID) FROM offeredjobs WHERE EMPLOYER_ID = '$cux_id' ";
+  $result = my_query($sql2);
+  $return = $result->fetch();
+
+ return $return[0];
+
+
+}
+
+function create_post($sql){
+
+ my_query($sql);
+
 }
 
 function prepareUserMenu(){
     global $registered_user, $registered_user_category;
     global $messages;
 
-/*    $page = "<header class='header black-bg'>
+    /*
+    $page = "<header class='header black-bg'>
     <a href='index.php' class='logo'>Web Career Portal</a>
     </header>";
-*/
+    */
     $page = '<div class="top-menu" role="alert">
     <ul class="nav pull-right top-menu">
   <form class="form-menu" method="post">
@@ -182,10 +211,10 @@ function prepareUserMenu(){
           $page .= "this is the Basic Job Seeker user menu";
         break;
         case 5:
-          $page .= "this is the Gold Recruiter user menu";
+          $page .= getRecruiterMenu("Gold Recruiter user menu");
         break;
         case 6:
-          $page .= "this is the Prime Recruiter user menu";
+          $page .= getRecruiterMenu("Prime Recruiter user menu");
         break;
         default:
         $messages['ERROR'] = "USER CATEGORY ERROR";
@@ -193,8 +222,15 @@ function prepareUserMenu(){
     return $page;
 }
 
-function displayPage($page)
-{
+function getRecruiterMenu($msg){
+  return "<h2>$msg</h2>
+  <ul>
+  <li><a href='/Employer/new-job.php'>Create Jobs</a></li>
+  <li><a href='/Employer/update-job.php'>Jobs Maintenance</a></li>
+  </ul>";
+}
+
+function displayPage($page){
   global $messages;
   
   if(!empty($messages))
@@ -229,3 +265,4 @@ function displayPage($page)
   </html>
   <?php
 }
+
