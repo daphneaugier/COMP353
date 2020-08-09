@@ -10,7 +10,7 @@ my_page_start("Web Career Portal");
 
 if (getUserConnection()){
     $page = prepareUserMenu();
-    	    if( $_SESSION["type"] == (5 || 6)  ){
+    	    if( $_SESSION["category"] == (5 || 6)  ){
     	    	
     	    	$emp_name=$_SESSION['emp_id'];
 		   		echo "<h6>Emplyer ID: "; print_r ($_SESSION["emp_id"]);echo "</h6><br> ";
@@ -21,7 +21,7 @@ if (getUserConnection()){
 		   		create_post($sql);
 		   		//create_post($sql2);
 	   		}
-	   		if( $_SESSION["type"] == 1){
+	   		if( $_SESSION["category"] == 1){
 	   			header("Location: http://localhost/COMP353/user/user_search.php");
 				exit;
 	   		}

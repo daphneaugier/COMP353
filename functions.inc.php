@@ -128,13 +128,10 @@ function checkUserPassword($user, $password){
             $registered_user = $user;
             $registered_user_category = $return[1];
 
-<<<<<<< Updated upstream
-            $_SESSION["type"] = "users";
-=======
+
             setcookie("career_user", $registered_user, time()+ 3600); // Crée le cookie
             setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
             $_SESSION["type"] = $registered_user_category;
->>>>>>> Stashed changes
             $_SESSION["emp_id"] = $registered_user;
             $_SESSION["category"] = $registered_user_category;
 
@@ -149,13 +146,11 @@ function checkUserPassword($user, $password){
             $registered_user = $user;
             $registered_user_category = $return[1];
 
-<<<<<<< Updated upstream
-            $_SESSION["type"] = "employer";
-=======
+
+
             setcookie("career_Employee", $registered_user, time()+ 3600); // Crée le cookie
             //setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
             $_SESSION["type"] = $registered_user_category;
->>>>>>> Stashed changes
             $_SESSION["emp_id"] = $registered_user;
             $_SESSION["category"] = $registered_user_category;
 
