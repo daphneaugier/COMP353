@@ -6,9 +6,12 @@ include_once "users.inc.php";
 
 my_page_start("Web Career Portal");
 
+
+
 if (getUserConnection()){
     $page = prepareUserMenu();
-    	    if( $_SESSION["type"] == "employer"){
+    	    if( $_SESSION["type"] == (5 || 6)  ){
+    	    	
     	    	$emp_name=$_SESSION['emp_id'];
 		   		echo "<h6>Emplyer ID: "; print_r ($_SESSION["emp_id"]);echo "</h6><br> ";
 		   		$num_of_post=numofappliposted();
@@ -17,13 +20,19 @@ if (getUserConnection()){
 		   		 // $sql2 = "INSERT INTO OFFEREDJOBS (JOB_ID, USER_ID, EMPLOYER_ID) VALUES (4,'admin' ,$emp_name )";
 		   		create_post($sql);
 		   		//create_post($sql2);
-	   		}else{
+	   		}
+	   		if( $_SESSION["type"] == 1){
+	   			header("Location: http://localhost/COMP353/user/user_search.php");
+				exit;
+	   		}
 
+	   		else{
 	   			echo "<h6>user ID: "; print_r ($_SESSION["emp_id"]); echo "</h6><br> ";
-	   			   		}
+	   		}
 
 }else{
     $page = prepareConnectionForm();
 }
+
 
 displayPage($page);
