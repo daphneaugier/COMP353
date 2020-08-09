@@ -118,7 +118,7 @@ function checkUserPassword($user, $password){
     global $registered_user, $registered_user_category;
 
 
-    $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_ID = '$user' ";
+    $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_NAME = '$user' ";
     $sql = "SELECT user_password, user_category FROM users WHERE user_name = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
