@@ -3,7 +3,9 @@
 /**
  * Some initialisation for Database connection
  * and related functions
-*/
+ * 
+ * 
+ */
 
 $host = "localhost";
 $user = "root";
@@ -21,13 +23,24 @@ try {
 function my_query($sql){
     global $con;
 
-    if($result = $con->query($sql)){
+    try {
+  //      echo "<p>$sql";
+      if($result = $con->query($sql)){
+/*
+        echo "<pre>";
+        print_r($result);
+        echo "</pre>";
+*/
         return $result;
-    } else {
+      } else {
         echo '<div class="alert alert-danger" role="alert">';
         echo "<h2>SQL ERROR</h2>";
         echo "<p style='color:red;'>".$con->error."</p>
         </div>";
         return false;    
+      }
+    } catch(PDOException $e) {
+      $messages['ERROR'] = "SQL Error: " . $e->getMessage();
     }
+    
 }    
