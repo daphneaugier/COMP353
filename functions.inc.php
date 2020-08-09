@@ -119,7 +119,7 @@ function checkUserPassword($user, $password){
 
 
     $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_ID = '$user' ";
-    $sql = "SELECT user_password, user_category FROM users WHERE user_id = '$user' ";
+    $sql = "SELECT user_password, user_category FROM users WHERE user_name = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
         if ($password == $return[0])
@@ -219,7 +219,6 @@ function prepareUserMenu(){
         default:
         $messages['ERROR'] = "USER CATEGORY ERROR";
     }
-    $page .= updateStatus();
     return $page;
 }
 
