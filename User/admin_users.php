@@ -207,7 +207,7 @@ require_once('process-users.php');
                         <td><?php echo $row['MODIFIED_DATE'] ?></td>
                         <td>
                         <div class="row">
-                        <a href="ADMIN-EDIT.php?edit=<?php echo $row['user_id'];?>" class="btn btn-info">Edit</a>
+                        <a href="admin_users.php?edit=<?php echo $row['user_id'];?>" class="btn btn-info">Edit</a>
                         <a href="process-users.php?delete=<?php echo $row['user_id']; ?>" class="btn btn-danger">Delete</a>
                       </div>
                         </td>
