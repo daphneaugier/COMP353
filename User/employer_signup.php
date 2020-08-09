@@ -5,10 +5,6 @@
   my_page_start("Web Career Portal - Sign Up Page");
 
 ?>
-<html>
-<head>
-</head>
-<body>
     <div class="container">
  <div class="py-1 text-center">
     <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="0">
@@ -16,7 +12,7 @@
 
   <div class="signup-form row justify-content-center">
     <div class="col-md-6 order-md-2 mb-4">
-      <h2>User Sign Up </h2>
+      <h2>Employer Sign Up </h2>
       <form action="process_new_user.php" method="POST" class="needs-validation" novalidate>
         <div class="row">
           <div class="col-md-6 mb-3">
@@ -344,7 +340,7 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label for="zip">Zip / Postal Code</label>
+            <label for="zip">Zip</label>
             <input type="text" name="zip" class="form-control" id="zip" placeholder="" required>
             <div class="invalid-feedback">
               Zip code required.
@@ -356,10 +352,9 @@
         <div class="row">
           <div class="col-md-5 mb-3">
             <label for="membership">Membership Type</label>
-            <select class="custom-select d-block w-100" name="membership" id="membership" onchange="display()"required>
-              <option value="Basic">Basic Free</option>
-              <option value="Prime">Prime $10/Monthly</option>
-              <option value="Gold">Gold $20/Monthly</option>
+            <select class="custom-select d-block w-100" name="membership" id="membership" required>
+              <option value="Prime">Prime $50/Monthly</option>
+              <option value="Gold">Gold $100/Monthly</option>
             </select>
             <div class="invalid-feedback">
               Please select a membership type.
@@ -368,8 +363,9 @@
         </div>
       
         <hr class="mb-4">
-        <div id="payment" style="display:none;">
+
         <h4 class="mb-3">Payment</h4>
+
         <div class="d-block my-3">
           <div class="custom-control custom-radio">
             <input id="credit" name="paymentMethod" value="Credit Card" type="radio" class="custom-control-input" checked required>
@@ -417,7 +413,6 @@
             </div>
           </div>
         </div>
-      </div>
         <hr class="mb-4">
         <input class="btn btn-primary btn-lg btn-block" type="Submit" value="Create Account">
       </form>
@@ -433,21 +428,6 @@
   </footer>
 </div>
 </body>
-<script type="text/javascript">
-   function display(){
-     var selection = document.getElementById("membership").value;
-    switch(selection){
-    case "Prime":
-    $("#payment").show()
-    case "Gold":
-    $("#payment").show()
-   break;
-    default:
-    $("#payment").hide()
-    }
-}
-
-  </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
         <script src="form-validation.js"></script></body>

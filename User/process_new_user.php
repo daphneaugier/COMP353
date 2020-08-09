@@ -5,20 +5,39 @@ error_reporting(E_ALL);
 
 include_once "../config.inc.php";
 //include_once "../functions.inc.php";
+$conn = mysqli_connect("localhost", "root", "root", "career");
 
+//check membership type 
+$membership_type = $_POST['membership'];
+
+if($membership_type == "Basic"){
+  $membership_type = 4;
+}elseif($membership_type){
+  $membership_type = 3;
+}
+$membership_type= 2;
+
+//pass user_id through session!!
+// for now it is hard coded
 $user_id = "";
 $user_name = $_POST['firstName'].' '.$_POST['lastName'];
 $user_password = $_POST['password'];
 $email_id = $_POST['email'];
 $join_date = ""; //today's date;
 
-//$sql = "INSERT INTO users (user_id, user_name, user_password, email_id) VALUES 
-//('$user_id', '$user_name', '$user_password', '$email_id')";
+$sql_new_user = "INSERT INTO users (user_id, user_category, user_name, user_password, EMAIL_ID,CONTACT_NUMBER,CREATE_DATE, MODIFIED_DATE) VALUES
+        ('7', '$membership_type', '$user_name', '$user_password', null, null, null, null)";
 
-$sql = "INSERT INTO users (user_id, user_status, user_name, user_password, EMAIL_ID,CONTACT_NUMBER,CREATE_DATE, MODIFIED_DATE) VALUES
-        ('test','4', '$user_name', '$user_password', null, null, null, null)";
+//get values for payment method from form
+$payment_method = $_POST['paymentMethod'];
+$current_date = date("Y-m-d");
 
-my_query($sql)
+
+$sql_payment_method = "INSERT INTO paymentmethod (USER_ID, PAYMENT_METHOD, CREATE_DATE, UPDATE_DATE) VALUES
+                      ('7','$payment_method', '$current_date', null)";
+
+mysqli_query($conn,$sql_new_user) or die(mysqli_error($conn));
+mysqli_query($conn,$sql_payment_method) or die(mysqli_error($conn));
 
 ?>
 

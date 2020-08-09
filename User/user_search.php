@@ -207,7 +207,7 @@ require_once('process-application.php');
                       $apply = 0;
                       //check current user ID and which jobs they have applied to
                       //currently hardcoded, must change to use cookie
-                      if($row['USER_ID'] == "prime_seeker" && $row['STATUS'] == "applied"){
+                      if($row['USER_ID'] == "3" && $row['STATUS'] == "applied"){
                         $text = "Applied";
                         $style = "btn btn-success";
                         $apply = 1;

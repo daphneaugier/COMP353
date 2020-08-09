@@ -7,10 +7,10 @@ error_reporting(E_ALL);
 session_start();
 
 $conn = mysqli_connect("localhost", "root", "root", "career");
-$sql = "SELECT jobs.JOB_ID, jobs.TITLE, jobs.LOCATION, jobs.ORGANISATION_NAME, jobs.DESCRIPTION, jobs.VACANCY, jobs.EXEPRIENCE, jobs.POSTED_BY, jobs.POSTED_DATE, jobs.EXPIRY_DATE, jobs.JOB_CATEGORY, offeredjobs.STATUS, offeredjobs.USER_ID
+$sql = "SELECT jobs.JOB_ID, jobs.TITLE, jobs.LOCATION, jobs.ORGANISATION_NAME, jobs.DESCRIPTION, jobs.VACANCY, jobs.EXEPRIENCE, jobs.POSTED_BY, jobs.POSTED_DATE, jobs.EXPIRY_DATE, jobs.JOB_CATEGORY, offeredjobs.STATUS, offeredjobs.USER_ID, offeredjobs.EMPLOYER_ID
 FROM jobs
 INNER JOIN offeredjobs ON jobs.JOB_ID = offeredjobs.JOB_ID";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));;
 
 
 //check if Apply button is pressed
@@ -19,10 +19,10 @@ if (isset($_GET['job_id']) && isset($_GET['applied'])){
 
   if($result->num_rows){
           $row=$result->fetch_array();
-          print_r($row);
           $job_id = $_GET['job_id'];
-          $user_id = "prime_seeker";
-          $employer_id ="TCS112";
+          //NEEDS TO CHANGE TO PASS USER_ID FROM previous page from cookie!!
+          $user_id = "3";
+          $employer_id =$row['EMPLOYER_ID'];
           $status ="applied";
           // $offered_package = 50000;
           // $joining_date ="2020-08-19";
