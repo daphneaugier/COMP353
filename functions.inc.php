@@ -21,7 +21,7 @@ function prepareConnectionForm(){
 
   return '<div class="alert alert-primary text-center" role="alert">
   <form class="form-signin" method="post">
-    <img class="mb-4" src="logo.png" alt="" width="72" height="72">
+    <img class="mb-4" src="/logo.png" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="inputUser" class="sr-only">User name</label>
     <input type="text" id="inputUser" class="form-control" placeholder="User name" name="user_name" required autofocus>
@@ -48,27 +48,30 @@ function prepareConnectionForm(){
 
 function getUserConnection(){
   global $messages;
-  global $registered_user, $registered_user_category;
+  global $registered_user, $registered_user_category, $registered_user_type;
 
-    if(isset($_COOKIE["career_user"])){
+    if(isset($_SESSION["emp_id"])){
       // There is a cookie already set, user is comig back for 2 reasons :
       // - to continue to work
       // - to logout
-      $registered_user = $_COOKIE['career_user'];
-      $registered_user_category = $_COOKIE['career_category'];
+      $registered_user = $_SESSION["emp_id"];
+      $registered_user_category = $_SESSION["category"];
+      $registered_user_type = $_SESSION["type"];
+
       if(isset($_POST['logout'])){
-            // Discard cookies
+            // Discard session
             session_destroy();
             session_start();
-            setcookie("career_user", "", time()-3600);
-            setcookie("career_category", $registered_user_category, time()- 3600);
+            
             $messages['INFO'] = "Good bye $registered_user";
             
 
             return false;
         }else{
-            setcookie("career_user", $registered_user, time()+ 3600); // Relance le cookie pour 1h
-            setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
+            $_SESSION["type"]   = $registered_user_type;
+            $_SESSION["emp_id"] = $registered_user;
+            $_SESSION["category"] = $registered_user_category;
+
             $messages['INFO'] =  "You are connected as $registered_user";
             return true;
         }
@@ -115,10 +118,8 @@ function getUserConnection(){
 }
 
 function checkUserPassword($user, $password){
-    global $registered_user, $registered_user_category;
+    global $registered_user, $registered_user_category, $registered_user_type;
 
-
-    $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_NAME = '$user' ";
     $sql = "SELECT user_password, user_category FROM users WHERE user_name = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
@@ -127,27 +128,24 @@ function checkUserPassword($user, $password){
             $registered_user = $user;
             $registered_user_category = $return[1];
 
-            setcookie("career_user", $registered_user, time()+ 3600); // Crée le cookie
-            setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
             $_SESSION["type"] = "users";
             $_SESSION["emp_id"] = $registered_user;
-
+            $_SESSION["category"] = $registered_user_category;
 
             return true;
         }
     }
+    $sql2 = "SELECT PASSWORD, employer_category FROM employer WHERE EMPLOYER_NAME = '$user' ";
     if($result = my_query($sql2)){
         $return = $result->fetch();
         if ($password == $return[0])
         {
             $registered_user = $user;
-            //$registered_user_category = $return[1];
+            $registered_user_category = $return[1];
 
-            setcookie("career_Employee", $registered_user, time()+ 3600); // Crée le cookie
-            //setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
             $_SESSION["type"] = "employer";
             $_SESSION["emp_id"] = $registered_user;
-
+            $_SESSION["category"] = $registered_user_category;
 
             return true;
         }else{
@@ -176,7 +174,7 @@ function create_post($sql){
 }
 
 function prepareUserMenu(){
-    global $registered_user, $registered_user_category;
+    global $registered_user, $registered_user_category, $registered_user_type;
     global $messages;
 
     /*
@@ -225,8 +223,8 @@ function prepareUserMenu(){
 function getRecruiterMenu($msg){
   return "<h2>$msg</h2>
   <ul>
-  <li><a href='/Employer/new-job.php'>Create Jobs</a></li>
-  <li><a href='/Employer/update-job.php'>Jobs Maintenance</a></li>
+  <li><a href='/new-job.php'>Create Jobs</a></li>
+  <li><a href='/update-job.php'>Jobs Maintenance</a></li>
   </ul>";
 }
 
@@ -256,34 +254,6 @@ function displayPage($page){
       }
     }
   }
-
-function updateStatus() {
-    global $registered_user, $registered_user_category;
-
-    $sql = "SELECT * FROM user_categories WHERE category_code= 'user'";
-    $result = my_query($sql);
-    $return = $result->fetchAll();
-    $options = '';
-    if ($_POST['user_status']) {
-        try {
-            $sql = sprintf("UPDATE users SET user_status = %s WHERE user_name = '%s'", $_POST['user_status'], $registered_user);
-            my_query($sql);
-            echo 'Success';
-        } catch (Exception $e) {
-            echo 'Error when upgrading';
-        }
-    }
-    foreach ($return as $val) {
-        $options .= sprintf('<input type="radio" id="%s" name="user_status" value="%s" %s>', $val['category_code'], $val['category_id'], ($registered_user_category == $val['category_id'] ? "checked" : ""));
-        $options .= sprintf('<label for="%s">%s</label><br>', $val['category_id'], $val['category_name']);
-    }
-    $status = '<form method="post">';
-    $status .= '<div class="row"><div class="col-md-5 mb-3"><label for="membership"><br><strong> You can upgrade/downgrade your membership:</strong> </label><br>';
-    $status .= $options;
-    $status .= '<button class="btn btn-lg btn-primary btn-block" type="submit">Upgrade</button>';
-    $status .='</div></div></form>';
-    return $status;
-}
   echo $page;
   ?>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
