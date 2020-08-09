@@ -1,6 +1,6 @@
 <?php
 
-
+session_start();
 
 function showSelectPublisher(){
     global $con;
@@ -60,6 +60,8 @@ function my_page_start($title){
 
 }
 
+
+
 function prepareConnectionForm(){
 
   return '<div class="alert alert-primary text-center" role="alert">
@@ -94,9 +96,13 @@ function getUserConnection(){
       $registered_user_category = $_COOKIE['career_category'];
       if(isset($_POST['logout'])){
             // Discard cookies
+            session_destroy();
+            session_start();
             setcookie("career_user", "", time()-3600);
             setcookie("career_category", $registered_user_category, time()- 3600);
             $messages['INFO'] = "Good bye $registered_user";
+            
+
             return false;
         }else{
             setcookie("career_user", $registered_user, time()+ 3600); // Relance le cookie pour 1h
@@ -110,8 +116,18 @@ function getUserConnection(){
           switch($_POST['cmd']){
             case "sign-in":
               if (checkUserPassword($_POST['user_name'], $_POST['user_password'])){
-                $messages['INFO'] =  "Welcome $registered_user";
+               if($_SESSION["type"]=="employer"){
+
+                $messages['INFO'] =  "Welcome employeee";
+                //header("Location: /employer.php");
                 return true;
+               }
+               else{
+                      $messages['INFO'] =  "Welcome user";
+                      return true;
+
+
+               }
               }else{
                 $messages['ERROR'] =  "I don't know you ".$_POST['user_name'];
                 return false;
@@ -142,6 +158,8 @@ function getUserConnection(){
 function checkUserPassword($user, $password){
     global $registered_user, $registered_user_category;
 
+
+    $sql2 = "SELECT PASSWORD FROM employer WHERE EMPLOYER_ID = '$user' ";
     $sql = "SELECT user_password, user_status FROM users WHERE user_id = '$user' ";
     if($result = my_query($sql)){
         $return = $result->fetch();
@@ -152,12 +170,52 @@ function checkUserPassword($user, $password){
 
             setcookie("career_user", $registered_user, time()+ 3600); // Crée le cookie
             setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
+            $_SESSION["type"] = "users";
+            $_SESSION["emp_id"] = $registered_user;
+
+
+            return true;
+        }
+    }
+    if($result = my_query($sql2)){
+        $return = $result->fetch();
+        if ($password == $return[0])
+        {
+            $registered_user = $user;
+            //$registered_user_category = $return[1];
+
+            setcookie("career_Employee", $registered_user, time()+ 3600); // Crée le cookie
+            //setcookie("career_category", $registered_user_category, time()+ 3600); // Crée le cookie
+            $_SESSION["type"] = "employer";
+            $_SESSION["emp_id"] = $registered_user;
+
 
             return true;
         }else{
             return false;
         }
     }
+
+}
+
+
+
+function numofappliposted(){
+  $cux_id=$_SESSION["emp_id"];
+//$sql2 = "SELECT COUNT(JOB_ID) FROM OFFEREDJOBS WHERE EMPLOYER_ID = '$_SESSION["emp_id"]' ";
+$sql2 = "SELECT COUNT(JOB_ID) FROM OFFEREDJOBS WHERE EMPLOYER_ID = '$cux_id' ";
+$result = my_query($sql2);
+$return = $result->fetch();
+
+ return $return[0];
+
+
+}
+
+function create_post($sql){
+
+ my_query($sql);
+
 }
 
 function prepareUserMenu(){
