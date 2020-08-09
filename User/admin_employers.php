@@ -70,7 +70,7 @@ require_once('process_employers.php');
 
       <!-- Nav Item - Search for Jobs -->
       <li class="nav-item">
-        <a class="nav-link" href="admin_employees.php">
+        <a class="nav-link" href="admin_employers.php">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Employees</span></a>
       </li>
