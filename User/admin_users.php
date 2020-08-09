@@ -199,7 +199,7 @@ require_once('process-users.php');
                     ?>
                       <tr>
                         <td><?php echo $row['user_id'] ?></td>
-                        <td><?php echo $row['user_status'] ?></td>
+                        <td><?php echo $row['user_category'] ?></td>
                         <td><?php echo $row['user_name'] ?></td>
                         <td><?php echo $row['user_password'] ?></td>
                         <td><?php echo $row['EMAIL_ID'] ?></td>

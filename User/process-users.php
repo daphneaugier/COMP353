@@ -6,9 +6,9 @@ error_reporting(E_ALL);
 
 session_start();
 
-$host = "192.168.64.2";
-$user = "career";
-$password = "topsecret";
+$host = "localhost";
+$user = "root";
+$password = "root";
 $dbname = "career";
     
 

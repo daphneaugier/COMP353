@@ -13,7 +13,7 @@
   <div class="signup-form row justify-content-center">
     <div class="col-md-6 order-md-2 mb-4">
       <h2>User Sign Up </h2>
-      <form action="process-form.php" method="POST" class="needs-validation" novalidate>
+      <form action="process_new_user.php" method="POST" class="needs-validation" novalidate>
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="firstName">First name</label>
@@ -420,7 +420,7 @@
       </form>
       <div class="text-center">
         Already have an account? 
-      <a href="../login.php">Sign in</a>
+      <a href="../index.php">Sign in</a>
     </div>
     </div>
   </div>
