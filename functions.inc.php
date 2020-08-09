@@ -219,6 +219,7 @@ function prepareUserMenu(){
         default:
         $messages['ERROR'] = "USER CATEGORY ERROR";
     }
+    $page .= updateStatus();
     return $page;
 }
 
@@ -256,6 +257,34 @@ function displayPage($page){
       }
     }
   }
+
+function updateStatus() {
+    global $registered_user, $registered_user_category;
+
+    $sql = "SELECT * FROM user_categories WHERE category_code= 'user'";
+    $result = my_query($sql);
+    $return = $result->fetchAll();
+    $options = '';
+    if ($_POST['user_status']) {
+        try {
+            $sql = sprintf("UPDATE users SET user_status = %s WHERE user_name = '%s'", $_POST['user_status'], $registered_user);
+            my_query($sql);
+            echo 'Success';
+        } catch (Exception $e) {
+            echo 'Error when upgrading';
+        }
+    }
+    foreach ($return as $val) {
+        $options .= sprintf('<input type="radio" id="%s" name="user_status" value="%s" %s>', $val['category_code'], $val['category_id'], ($registered_user_category == $val['category_id'] ? "checked" : ""));
+        $options .= sprintf('<label for="%s">%s</label><br>', $val['category_id'], $val['category_name']);
+    }
+    $status = '<form method="post">';
+    $status .= '<div class="row"><div class="col-md-5 mb-3"><label for="membership"><br><strong> You can upgrade/downgrade your membership:</strong> </label><br>';
+    $status .= $options;
+    $status .= '<button class="btn btn-lg btn-primary btn-block" type="submit">Upgrade</button>';
+    $status .='</div></div></form>';
+    return $status;
+}
   echo $page;
   ?>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
