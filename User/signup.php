@@ -420,7 +420,7 @@
       </form>
       <div class="text-center">
         Already have an account? 
-      <a href="../login.php">Sign in</a>
+      <a href="../index.php">Sign in</a>
     </div>
     </div>
   </div>
