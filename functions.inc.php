@@ -61,7 +61,7 @@ function getUserConnection(){
       if(isset($_POST['logout'])){
             // Discard session
             session_destroy();
-            session_start();
+            //session_start();
             
             $messages['INFO'] = "Good bye $registered_user";
             
@@ -114,7 +114,6 @@ function getUserConnection(){
             return false;
         }
     }
-    
 }
 
 function checkUserPassword($user, $password){
