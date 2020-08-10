@@ -22,11 +22,13 @@ if (getUserConnection()){
 		   		//create_post($sql2);
 	   		}
 	   		if( $_SESSION["category"] == 1){
-	   			header("Location: http://localhost/COMP353/user/user_search.php");
+	   			header("Location: http://localhost/COMP353/user/admin_users.php");
 				exit;
 	   		}
 
 	   		else{
+	   			header("Location: http://localhost/COMP353/user/user_search.php");
+				exit;
 	   			echo "<h6>user ID: "; print_r ($_SESSION["emp_id"]); echo "</h6><br> ";
 	   		}
 

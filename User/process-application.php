@@ -21,7 +21,7 @@ if (isset($_GET['job_id']) && isset($_GET['applied'])){
           $row=$result->fetch_array();
           print_r($row);
           $job_id = $_GET['job_id'];
-          $user_id = "prime_seeker";
+          $user_id = "prime_seeker" || "basic_seeker" || "gold_seeker";
           $employer_id ="TCS112";
           $status ="applied";
           // $offered_package = 50000;
