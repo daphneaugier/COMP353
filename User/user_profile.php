@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('process-users.php');
+require_once('edit_user_profile.php');
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@ require_once('process-users.php');
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="user_dashboard.php">
+        <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -70,17 +70,12 @@ require_once('process-users.php');
 
       <!-- Nav Item - Search for Jobs -->
       <li class="nav-item">
-        <a class="nav-link" href="admin_employers.php">
-          <i class="fas fa-fw fa-user-tie"></i>
-          <span>Employees</span></a>
+        <a class="nav-link" href="#">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Search Jobs</span></a>
       </li>
 
       <!-- Nav Item - View Applied Jobs -->
-      <li class="nav-item active">
-        <a class="nav-link" href="admin_users.php">
-          <i class="fas fa-fw fa-user"></i>
-          <span>Users</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -149,110 +144,74 @@ require_once('process-users.php');
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Users</h1>
-          <body id="page-top">
-          <p class="mb-4">Use the table below to modify, delete, or add users.</a></p>
+    <div class="row">
+<div class="container">
+    <h1>Edit Profile</h1>
+    <hr>
+  <div class="row">
+      <!-- left column -->
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        </div>
+        <h3>Personal info</h3>
+        
+        <form class="form-horizontal justify-content-center" role="form">
 
-          <!-- DataTales Example -->
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <?php if(isset($_SESSION['message'])):?>
-              <div class="alert alert-<?php echo $_SESSION['msg_type'];?>">
-                <?php 
-                  echo $_SESSION['message'];
-                  unset($_SESSION['message']);
-                ?>          
-              </div>
-            <?php endif ?>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>User ID </th>
-                      <th>User Status</th>
-                      <th>Username</th>
-                      <th>Password</th>
-                      <th>Email</th>
-                      <th>Create Date</th>
-                      <th>Modified Date</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>User ID </th>
-                      <th>User Status</th>
-                      <th>Username</th>
-                      <th>Password</th>
-                      <th>Email</th>
-                      <th>Create Date</th>
-                      <th>Modified Date</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <?php
-                     while($row = mysqli_fetch_assoc($result)):
-                    ?>
-                      <tr>
-                        <td><?php echo $row['user_id'] ?></td>
-                        <td><?php echo $row['user_category'] ?></td>
-                        <td><?php echo $row['user_name'] ?></td>
-                        <td><?php echo $row['user_password'] ?></td>
-                        <td><?php echo $row['EMAIL_ID'] ?></td>
-                        <td><?php echo $row['CREATE_DATE'] ?></td>
-                        <td><?php echo $row['MODIFIED_DATE'] ?></td>
-                        <td>
-                        <div class="row">
-                        <a href="admin_users.php?edit=<?php echo $row['user_id'];?>" class="btn btn-info">Edit</a>
-                        <a href="process-users.php?delete=<?php echo $row['user_id']; ?>" class="btn btn-danger">Delete</a>
-                      </div>
-                        </td>
-                      </tr>
+           <?php
+              while($row = mysqli_fetch_assoc($result)):
+            ?>
 
-                  <?php endwhile; ?>
-                  </tbody>
-                </table>
-              <div class="row justify-content-center">
-                <form action="process-users.php" method="POST">
-                  <input type="hidden" name="hidden_user_id" value="<?php echo $user_id;?>">
-                  <div class="form-group">
-                  <label> User ID </label>
-                  <input type="text" name="user_id" class="form-control" placeholder="Enter user id" value="<?php echo $user_id; ?>">
-                  </div>
-                  <div class="form-group">
-                  <label>User Status</label>
-                  <input type="text" name="user_status" class="form-control" placeholder="Enter user status" value="<?php echo $user_status; ?>">
-                  </div>
-                  <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" name="user_name" class="form-control" placeholder="Enter username" value="<?php echo $user_name; ?>">
-                  </div>
-                  <div class="form-group">
-                  <label>Password</label>
-                  <input type="text" name="password" class="form-control" placeholder="Enter password" value="<?php echo $password; ?>">
-                  </div>
-                  <div class="form-group">
-                  <?php 
-                    if($update==true):
-                  ?>
-                  <button type="submit" class="btn btn-info" name="update">Update</button>
-                  <?php 
-                    else:
-                  ?>
-                  <button type="submit" class="btn btn-primary" name="save">Save</button>
-                  <?php endif ?>
-                  </div>
-                </form>
-              </div>
-
+          <div class="form-group">
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="<? echo $row['user_name'];?>">
             </div>
           </div>
-        </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="<? echo $row['user_name'];?>">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="<? echo $row['email_id'];?>">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Username:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" value="janeuser">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="<? echo $row['user_password'];?>">
+            </div>
+          </div>
+        <? endwhile?>
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+              <input type="button" class="btn btn-primary" value="Save Changes">
+              <span></span>
+              <input type="reset" class="btn btn-dark" value="Cancel">
+            </div>
+          </div>
+        </form>
       </div>
+  </div>
+</div>
+<hr>
+
+</div>
+</div>
           <!-- /.container-fluid -->
 
       </div>
@@ -314,34 +273,6 @@ require_once('process-users.php');
 
   <!-- Page level custom scripts -->
   <!--<script src="js/demo/datatables-demo.js"></script>-->
-  <script>
-
-    $(document).ready(function() {
-    $('#dataTable').DataTable( {
-      statesave: true,
-        initComplete: function () {
-            this.api().columns(":not(':first,:last')" ).every( function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
- 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        }
-     } );
-} );
-  </script>
 </body>
 
 </html>

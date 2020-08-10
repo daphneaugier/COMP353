@@ -18,7 +18,7 @@ require_once('process_employers.php');
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Tables</title>
+  <title>Modify Employers</title>
 
   <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@ require_once('process_employers.php');
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="user_dashboard.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -69,16 +69,16 @@ require_once('process_employers.php');
       <!-- Nav Item - Pages Collapse Menu -->
 
       <!-- Nav Item - Search for Jobs -->
-      <li class="nav-item">
-        <a class="nav-link" href="admin_employers.php">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Employees</span></a>
+      <li class="nav-item active">
+        <a class="nav-link active" href="admin_employers.php">
+          <i class="fas fa-fw fa-user-tie"></i>
+          <span>Employers</span></a>
       </li>
 
       <!-- Nav Item - View Applied Jobs -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="admin_users.php">
-          <i class="fas fa-fw fa-table"></i>
+          <i class="fas fa-fw fa-users"></i>
           <span>Users</span></a>
       </li>
 
@@ -151,7 +151,7 @@ require_once('process_employers.php');
           <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">Users</h1>
           <body id="page-top">
-          <p class="mb-4">Use the table below to modify, delete, or add users.</a></p>
+          <p class="mb-4">Use the table below to modify, delete, or add employers.</a></p>
 
           <!-- DataTales Example -->
           <!-- DataTales Example -->
